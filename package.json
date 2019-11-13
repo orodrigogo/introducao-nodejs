@@ -1,0 +1,16 @@
+{
+  "name": "prafazerapp",
+  "version": "1.0.0",
+  "description": "API para aplicativo de tarefas",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "author": "Rodrigo Gonçalves Santana",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.7.10",
+    "nodemon": "^1.19.4"
+  }
+}
