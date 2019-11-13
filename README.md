@@ -1,7 +1,7 @@
-### Documentação do GoBarber
+### Documentação da API 
 
-Versão mobile destinada aos clientes de barbearias. Os instrutores utilizam a versão web.
+Essa foi a API que ensinei a desenvolver no Workshop de introdução ao NodeJS. Desenvolvendo uma API para atender um aplicativo de tarefas. 
 
-# Demonstração da Interface
+# Demonstração da Interface do Aplicativo que irá consumir a API
 
 ![Alt Text](screnapp.png)
