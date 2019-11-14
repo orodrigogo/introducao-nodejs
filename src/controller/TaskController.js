@@ -1,5 +1,11 @@
-/*BANCO DE DADOS*/
-const mongo = require('../config/database');
+const { mongo, ObjectId } = require('../config/database');
+
+/*
+  ### TIPOS DE PARAMETROS ###
+  Query params = ?teste=1
+  Route params = /teste/1
+  Request body = { "nome" : "rodrigo"}
+*/
 
 class TaskController{
   Register(req, res){
@@ -10,7 +16,7 @@ class TaskController{
       res.status(400).json({'error':'name, description, date e hora SÃO OBRIGATÓRIOS!'});
     }
 
-    mongo.connection.collection('task').insertOne({
+    mongo.collection('task').insertOne({
       'name': name,
       'description': description,
       'date': date,
@@ -29,7 +35,7 @@ class TaskController{
       res.status(400).json({'error': 'Done é obrigatório. True para atividades finalizadas e False para pendentes'});
     }
 
-    mongo.connection.collection('task').find({done: req.query.done === "true" ? true : false}).toArray().then(result => {
+    mongo.collection('task').find({done: req.query.done === "true" ? true : false}).toArray().then(result => {
       res.status(200).json(result);
     }).catch(error => {
       res.status(400).json({'error': error.message});
@@ -39,7 +45,7 @@ class TaskController{
   TaskDetails(req, res){
     const { id } = req.params;
 
-    mongo.connection.collection('task').findOne({_id: mongo.Types.ObjectId(id)}).then(result => {
+    mongo.collection('task').findOne({_id: ObjectId(id)}).then(result => {
       res.status(200).json(result);
     }).catch(error => {
       res.status(400).json({'error': error.message});
@@ -49,7 +55,7 @@ class TaskController{
   TaskDelete(req, res){
     const { id } = req.params;
 
-    mongo.connection.collection('task').deleteOne({_id: mongo.Types.ObjectId(id)}).then(result => {
+    mongo.collection('task').deleteOne({_id: ObjectId(id)}).then(result => {
       res.status(200).json(result);
     }).catch(error => {
       res.status(400).json({'error': error.message});
@@ -66,7 +72,7 @@ class TaskController{
       res.status(400).json({'error':'name, description, date e hora SÃO OBRIGATÓRIOS!'});
     }
 
-    mongo.connection.collection('task').updateOne({_id: mongo.Types.ObjectId(id)}, {$set: {
+    mongo.collection('task').updateOne({_id: ObjectId(id)}, {$set: {
       'name': name,
       'description': description,
       'date': date,
@@ -84,15 +90,13 @@ class TaskController{
     const { id } = req.params;
 
     // Buscando pela tarefa.
-      mongo.connection.collection('task').findOne({_id: mongo.Types.ObjectId(id)}).then(async result => {
+      mongo.collection('task').findOne({_id: ObjectId(id)}).then(async result => {
       if(!result)
-      res.status(404).json({error: "Usuário não existe!"})
+      res.status(404).json({error: "Tarefa não existe!"})
 
-      await mongo.connection.collection('task').updateOne({_id: mongo.Types.ObjectId(id)}, {$set: {'done': !result.done }}).then( task => {
-        res.status(200).json(`Tarefa atualizada para ${!result.done ? 'finalizada' : 'pendente'}`)
+      await mongo.collection('task').updateOne({_id: ObjectId(id)}, {$set: {'done': !result.done }}).then( task => {
+        res.status(200).json({message: `Tarefa atualizada para ${!result.done ? 'finalizada' : 'pendente'}`})
       })
-     
-
     }).catch(error => {
       res.status(200).json(response)
     })
