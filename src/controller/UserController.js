@@ -1,4 +1,4 @@
-const mongo = require('../config/database');
+const { mongo } = require('../config/database');
 const bcrypt = require('bcrypt');
 
 
